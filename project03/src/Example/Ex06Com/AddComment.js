@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-const AddComment = () => {
+const AddComment = ({handleComment}) => {
     
     // 1. input 창에 댓글을 입력하고, + 버튼을 누르면, 댓글 목록에 댓글 추가!
 
@@ -17,22 +17,26 @@ const AddComment = () => {
     //      → conChange={} : 변화가 있을 때!
     //      → onKeyPress={} : 키보드 누를 때!
 
+    const [value, setValue] = useState("")
     // input 창에 변화 감지 → 댓글 등록 버튼 input 값 저장
-    //      → map 함수로 목록에 뿌려줄 것!
-
-    // ** 실시간 시간 :
-    // new Date().toLocaleTimeString()
-
-    const re = []
-
-    function ck(){
-        let reMap = re.map(item => <b key={item}>{item}</b>)
+    const inputHandle = (e) => {
+        setValue(e.target.value)
     }
-    
+    //      → map 함수로 목록에 뿌려줄 것!
+    const btnHandle = () => {
+        //      → 저장된 값을 상위 컴포넌트로 전송
+        handleComment(value)
+        //      → input 창을 비워줄 것!
+        setValue("")
+    }
+    const enterHandle = (e) => {
+        // console.log(e.code)
+        e.code === 'Enter' && btnHandle()
+    }
     return (
         <div>
-            <input type="text"></input>
-            <button onClick={ck}>+</button>
+            <input onChange={inputHandle} onKeyPress={enterHandle} value={value}></input>
+            <button onClick={btnHandle}>+</button>
         </div>
     )
 }
